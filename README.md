@@ -20,8 +20,8 @@ Go to the provision directory and start running the present scripts
 cd provision
 
 # build docker images 
-./docker-infra/docker-tcp-socket.sh
-./docker-infra/swapfile.sh
+sudo ./docker-infra/docker-tcp-socket.sh
+sudo ./docker-infra/swapfile.sh
 ./docker-infra/build-ansible.sh
 ./docker-infra/build-confd.sh
 ./docker-infra/build-containerbuddy.sh
