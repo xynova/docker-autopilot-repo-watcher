@@ -15,4 +15,21 @@ Clone the repo
 git clone https://github.com/xynova/docker-autopilot-repo-watcher.git
 cd docker-autopilot-repo-watcher
 ```
+Go to the provision directory and start running the present scripts
+```
+cd provision
+
+# build docker images 
+./docker-infra/docker-tcp-socket.sh
+./docker-infra/swapfile.sh
+./docker-infra/build-ansible.sh
+./docker-infra/build-confd.sh
+./docker-infra/build-containerbuddy.sh
+./docker-infra/build-nodejs-bower-gulp.sh
+
+# run containers
+./docker-containers/etcd.sh
+./docker-containers/ansible-watch.sh
+
+``
 
