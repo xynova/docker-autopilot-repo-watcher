@@ -1,0 +1,7 @@
+[template]
+src = "nginx.conf.tmpl"
+dest = "/tmp/confd/nginx.gateway.conf"
+prefix = "/containerbuddy"
+keys = [
+    "/app-blue"
+]

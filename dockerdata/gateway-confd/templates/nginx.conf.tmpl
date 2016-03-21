@@ -1,0 +1,21 @@
+
+{{ range $app := lsdir "/" }}
+upstream {{ $app }} {
+	{{ range $inst := lsdir (print "/" $app)  }}
+	{{ $service := json (getv (print "/" $app "/" $inst "/service" )) }}
+	server {{  $service.address  }}:{{  $service.port  }};
+	{{ end }}
+}
+{{ end }}
+
+server {
+    listen       80;
+    server_name  _;
+
+ {{ range $app := lsdir "/" }}
+    location / {
+        proxy_pass http://{{ $app }}/;
+        proxy_redirect off;
+    }
+    {{end}}
+}

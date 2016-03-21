@@ -1,0 +1,11 @@
+
+- name: "Notify"
+  local_action:
+    module: slack
+    token: "{{ SLACK_TOKEN }}"
+    msg: "{{ SLACK_MSG_TEXT | default('Hello you!') }}"
+    color: "{{ SLACK_MSG_COLOR | default('good') }}"
+    channel: "{{ SLACK_CHANNEL }}"
+    username: "{{ SLACK_USERNAME }}"
+    icon_emoji: "{{ SLACK_ICON }}"
+  when: "SLACK_TOKEN and SLACK_TOKEN != ''"

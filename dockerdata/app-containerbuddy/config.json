@@ -1,0 +1,19 @@
+{
+  "etcd": {
+    "endpoints": "http://{{ .HOST_IP }}:2379"
+    , "prefix": "/containerbuddy"
+  }
+  , "onStart": "echo start"
+  , "stopTimeout": 5
+  , "preStop": "echo pre stop"
+  , "postStop": "echo post stop"
+  , "services": [
+    {
+    "name": "app-blue"
+    , "port": 80
+    , "health": "/etc/containerbuddy/health-probe.sh"
+    , "poll": 5
+    , "ttl": 15
+    }
+  ]
+}

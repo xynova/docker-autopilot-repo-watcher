@@ -1,0 +1,17 @@
+
+# Defines where the repositories are going to be downloaded
+# These variables should be defined as environment variables and passed into the ansible-playbook cmd
+
+GIT_WATCHED_REPO_URL: null
+GIT_WATCHED_REPO_DIR: /tmp/watchedrepo
+GIT_WATCHED_REPO_BRANCH: null
+
+SLACK_TOKEN: null
+SLACK_CHANNEL: null
+SLACK_USERNAME: "ansible-watchrepo"
+SLACK_ICON: ":octocat:"
+
+GITREPOS_DIR: null 
+DOCKERDATA_DIR: null
+HOST_IP: null
+FORCE: false

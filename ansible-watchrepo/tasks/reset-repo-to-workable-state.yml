@@ -1,0 +1,18 @@
+- name: Notify error via Slack
+  include: notify-via-slack.yml 
+  vars: 
+    SLACK_MSG_TEXT: "{{ ansible_date_time.iso8601 }}> An error occurred deploying {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}, restoring repo to a workable state" 
+    SLACK_MSG_COLOR: "danger"
+
+
+- name: Restore git to last known branch
+  git: repo={{ GIT_WATCHED_REPO_URL }}
+       dest={{ GIT_WATCHED_REPO_DIR }}
+       version={{ OLD_VERSION }}
+  when: "OLD_VERSION is defined and OLD_VERSION != ''"
+
+- name: Delete watched WD otherwise
+  file: path={{ GIT_WATCHED_REPO_DIR }} state=absent
+  when: "OLD_VERSION is undefined or 'Failed to download remote objects and refs' in  PULL_RESULT.stderr"
+
+- fail: msg="Something went wrong"

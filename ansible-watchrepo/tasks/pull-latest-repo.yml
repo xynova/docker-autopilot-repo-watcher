@@ -1,0 +1,14 @@
+---
+
+- name: Pull latest branch "{{ GIT_WATCHED_REPO_BRANCH }}" from {{ GIT_WATCHED_REPO_URL }}
+  git: repo={{ GIT_WATCHED_REPO_URL }}
+       dest={{ GIT_WATCHED_REPO_DIR }}
+       version={{ GIT_WATCHED_REPO_BRANCH }}
+       depth=1
+  register: PULL_RESULT
+
+- name: Set version results
+  set_fact:
+    NEW_VERSION: "{{ PULL_RESULT.after }}"
+    OLD_VERSION: "{{ PULL_RESULT.before }}"
+

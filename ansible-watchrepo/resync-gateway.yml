@@ -1,0 +1,11 @@
+---
+
+- hosts: localhost
+  connection: local
+  become: true
+  become_method: sudo
+  gather_facts: false
+  
+  tasks:
+  - name: Resync gateway
+    include: tasks/run-resync-proxy.yml

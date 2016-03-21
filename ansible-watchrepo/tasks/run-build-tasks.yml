@@ -1,0 +1,24 @@
+---
+
+- name: Ensure npm packages are installed
+  shell: |
+    docker -H {{ DOCKER_HOST }} run \
+    --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    nodejs-bower-gulp sh -c "npm install"
+  register: RESULT
+  changed_when: "RESULT.stdout != ''"
+
+- name: Ensure Bower libraries are installed
+  shell: |
+    docker -H {{ DOCKER_HOST }} run \
+    --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    nodejs-bower-gulp sh -c "bower --allow-root install"
+  register: RESULT
+  changed_when: "RESULT.stdout != ''"
+ 
+- name: Build distribution files by running Gulp
+  shell: |
+    docker -H {{ DOCKER_HOST }} run \
+    --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    nodejs-bower-gulp sh -c "gulp --silent"
+

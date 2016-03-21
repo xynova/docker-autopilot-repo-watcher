@@ -1,0 +1,30 @@
+---
+
+- name: Ensure gateway proxy service
+  shell: |
+    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d -p 80:80 \
+    -v {{ DOCKERDATA_DIR }}/gateway-nginx/:/etc/nginx/conf.d  \
+    --name gateway-nginx \
+    nginx \
+    || docker -H {{ DOCKER_HOST }} restart gateway-nginx
+  register: COMMAND_RESULT
+  ignore_errors: true 
+  failed_when: "COMMAND_RESULT.stderr and 'is already in use by container' not in COMMAND_RESULT.stderr"
+  changed_when: COMMAND_RESULT.stdout != ""
+
+- name: Process new gateway proxy configuration from etcd
+  shell: |
+    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d  \
+    -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd \
+    -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd \
+    --name gateway-confd \
+    confd -node http://{{ HOST_IP }}:2379 -watch -interval 1000 \
+    || docker -H {{ DOCKER_HOST }} restart gateway-confd
+  register: COMMAND_RESULT
+  ignore_errors: true 
+  failed_when: "COMMAND_RESULT.stderr and 'is already in use by container' not in COMMAND_RESULT.stderr and 'INFO Backend nodes set to' not in COMMAND_RESULT.stderr"
+  changed_when: COMMAND_RESULT.stderr != ""
+
+- name: Reload gateway proxy so it reads new reload configuration
+  shell: |
+    docker -H {{ DOCKER_HOST }} exec gateway-nginx /usr/sbin/nginx -s reload 

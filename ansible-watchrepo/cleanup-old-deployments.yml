@@ -1,0 +1,17 @@
+---
+
+- hosts: localhost
+  connection: local
+  become: true
+  become_method: sudo
+  gather_facts: false
+  
+  vars_prompt:
+  - name: NEW_VERSION
+    prompt: What is the last commit id that should be preserved?
+    private: false
+
+  tasks:
+  - name: Cleanup
+    include: tasks/cleanup-old-deployment-artifacts.yml
+    when: NEW_VERSION != ''
