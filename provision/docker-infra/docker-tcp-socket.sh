@@ -13,4 +13,8 @@ BindIPv6Only=both
 WantedBy=sockets.target
 EOF
 
-systemctl stop docker && systemctl enable docker-tcp.socket && systemctl start docker
+
+systemctl stop docker.service 
+systemctl enable docker-tcp.socket 
+systemctl start docker-tcp.socket 
+systemctl start docker.service
