@@ -1,7 +1,7 @@
 - name: Notify error via Slack
   include: notify-via-slack.yml 
   vars: 
-    SLACK_MSG_TEXT: "{{ ansible_date_time.iso8601 }}> An error occurred deploying {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}, restoring repo to a workable state" 
+    SLACK_MSG_TEXT: "{{ ansible_date_time.iso8601 }}> An error occurred deploying {{ NEW_VERSION | default('?') }}:{{ GIT_WATCHED_REPO_BRANCH }}, restoring repo to a workable state" 
     SLACK_MSG_COLOR: "danger"
 
 
