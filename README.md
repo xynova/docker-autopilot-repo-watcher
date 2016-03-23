@@ -1,6 +1,8 @@
-# Docker+Ansible auto-pilot git repo watcher
+# Docker+Ansible git-repo auto-pilot deplyoment pipeline 
 
-This project demonstrates how to leverage Ansible inside a container to orchestrate a mini continuous build of a nodejs+angular application ([stub-ng-site](https://github.com/xynova/stub-ng-site)).
+The current project represents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and desired state of complex containerised work pipelines. 
+
+In this case, the Ansible container uses a docker-tcp socket to talk to the host's docker Daemon to manage independent dockerized tasks and keep the promise of having only one process per container.
 
 The main idea is to cover a few concepts when working with Docker:
 * Using one process per container and promote composability the Kubernetes way
@@ -8,28 +10,49 @@ The main idea is to cover a few concepts when working with Docker:
 * Demonstrate how small build and validation pipelines can be achieved without too many external pieces (starting small)
 
 
+1. monitores changes
+2. deploys without disruption
+3. keeps desired state
+4. maintains notifications
+5. does not collapse on restart
+
+to orchestrate a mini continuous build of a nodejs+angular application ([stub-ng-site](https://github.com/xynova/stub-ng-site)).
+
+
 ## How to run it
 
 Clone the repo
-```
-git clone https://github.com/xynova/docker-autopilot-repo-watcher.git
-cd docker-autopilot-repo-watcher
-```
-Go to the provision directory and start running the present scripts
-```
-cd provision
+>    `` git clone https://github.com/xynova/docker-autopilot-repo-watcher.git ``
+>    `` cd docker-autopilot-repo-watcher ``
 
-# build docker images 
-sudo ./docker-infra/docker-tcp-socket.sh
-sudo ./docker-infra/swapfile.sh
-./docker-infra/build-ansible.sh
-./docker-infra/build-confd.sh
-./docker-infra/build-containerbuddy.sh
-./docker-infra/build-nodejs-bower-gulp.sh
+Build the required docker images
 
-# run containers
+``` shell
+cd provision/docker-infra
+sudo ./docker-tcp-socket.sh
+```
+Build the required docker images
+
+``` shell
+cd provision/docker-infra
+sudo ./swapfile.sh
+```
+
+
+Build the required docker images
+
+``` shell
+cd provision/docker-infra
+./build-ansible.sh
+./build-confd.sh
+./build-containerbuddy.sh
+./build-nodejs-bower-gulp.sh
+```
+
+Run containers
+
+``` shell
 ./docker-containers/etcd.sh
-./docker-containers/ansible-watch.sh
-
+./docker-containers/ansible-watch.sh 
 ```
 
