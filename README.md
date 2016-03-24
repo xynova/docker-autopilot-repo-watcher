@@ -1,11 +1,16 @@
 # Ansible-in-Docker as auto-pilot orchestrator
 
 ### A bit of context
-The current project presents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and keeping desired state of complex containerised work pipelines in a a truly auto-pilot spirit. In this case, the Ansible container uses a docker-tcp socket to talk to the host's docker Daemon to combine independent dockerized tasks and keep the promise of having only one process per container.
+The current project shows an example of how we can run Ansible from within a container to orchestrate, monitor and keep desired state of a containerised work pipeline in a a truly auto-pilot spirit.
 
-Ansible in my opinion comes in as a very easy to learn and yet very powerful framework to organise infrastructure automation scripts. Shell code might be very sexy, but it becomes less and less readable once scripts get passed a certain level of complexity. 
+When compared to shell scripts (which tend to become less readable once passed certain level of complexity), Ansible stands as a very easy to learn framework that can do all mighty things while keeping infrastructure overhead to a bare minimum. 
 
-
+The main field player here is an Docker detached container that continuously runs an Ansible Playbook with the following set of responsibilities:
+ 
+1. Monitor changes made to a Git repository branch and perform  rolling updates when new versions are found. 
+3. Maintain the deployment in a healthy state even across server reboots.
+4. Push notifications to a slack channel in order to report progress, success or failure if errors are encountered.
+5. Be a healthy citizen and clean up after every new deployment.
 
 > **Note:** Talking to the docker Daemon sockets is a risky practice. When sharing hosts with multiple container workload, it is very important to impose restrictions on what those sockets can ask the daemon to do. Nevertheless, the general approach described in this project remains valid when dealing with more high-end platforms (like Kubernetes) that provide an APIs layer through which authentication and authorisation can be enforced. 
 
@@ -13,11 +18,7 @@ Ansible in my opinion comes in as a very easy to learn and yet very powerful fra
 ### Components
 The main 
 
-1. monitores changes
-2. deploys without disruption
-3. keeps desired state
-4. maintains notifications
-5. does not collapse on restart
+
 
 to orchestrate a mini continuous build of a nodejs+angular application ([stub-ng-site](https://github.com/xynova/stub-ng-site)).
 
