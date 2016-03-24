@@ -1,8 +1,10 @@
 # Docker+Ansible git-repo auto-pilot deplyoment pipeline 
 
-The current project represents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and desired state of complex containerised work pipelines. 
+The current project presents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and keeping desired state of complex containerised work pipelines in a a auto-pilot spirit. 
 
 In this case, the Ansible container uses a docker-tcp socket to talk to the host's docker Daemon to manage independent dockerized tasks and keep the promise of having only one process per container.
+
+In my personal opinion, talking to the docker Daemon sockets is a risky practice. When sharing hosts with multiple container workload, it is very important to impose restrictions on what those sockets can ask the daemon to do. Nevertheless, the general approach described in this project remains valid when dealing with more high-end platforms (like Kubernetes) that provide APIs that impose those. 
 
 The main idea is to cover a few concepts when working with Docker:
 * Using one process per container and promote composability the Kubernetes way
