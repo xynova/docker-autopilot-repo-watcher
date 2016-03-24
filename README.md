@@ -1,21 +1,17 @@
-# Docker+Ansible git-repo auto-pilot deplyoment pipeline 
+# Ansible-in-Docker as auto-pilot orchestrator
 
-## Intro
-The current project presents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and keeping desired state of complex containerised work pipelines in a a truly auto-pilot spirit. 
+### A bit of context
+The current project presents an example of how Ansible (running from within a container) can be used to simplify orchestration, monitoring and keeping desired state of complex containerised work pipelines in a a truly auto-pilot spirit. In this case, the Ansible container uses a docker-tcp socket to talk to the host's docker Daemon to combine independent dockerized tasks and keep the promise of having only one process per container.
 
-In this case, the Ansible container uses a docker-tcp socket to talk to the host's docker Daemon to manage independent dockerized tasks and keep the promise of having only one process per container.
-
-**Note:** Talking to the docker Daemon sockets is a risky practice. When sharing hosts with multiple container workload, it is very important to impose restrictions on what those sockets can ask the daemon to do. Nevertheless, the general approach described in this project remains valid when dealing with more high-end platforms (like Kubernetes) that provide an APIs layer through which authentication and authorisation can be enforced. 
+Ansible in my opinion comes in as a very easy to learn and yet very powerful framework to organise infrastructure automation scripts. Shell code might be very sexy, but it becomes less and less readable once scripts get passed a certain level of complexity. 
 
 
 
-## Components
-The main idea is to cover a few concepts when working with Docker:
-* Using one process per container and promote composability the Kubernetes way
-* Using Ansible as a higher level paradigm to make orchestration tasks more readable.
-* Demonstrate how small build and validation pipelines can be achieved without too many external pieces (starting small)
+> **Note:** Talking to the docker Daemon sockets is a risky practice. When sharing hosts with multiple container workload, it is very important to impose restrictions on what those sockets can ask the daemon to do. Nevertheless, the general approach described in this project remains valid when dealing with more high-end platforms (like Kubernetes) that provide an APIs layer through which authentication and authorisation can be enforced. 
 
 
+### Components
+The main 
 
 1. monitores changes
 2. deploys without disruption
