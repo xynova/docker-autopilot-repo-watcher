@@ -22,9 +22,12 @@ Within this project, it surfaces in a Docker detached container that continuousl
 
 * The Ansible container continuously monitors a git repository node-app@([stub-ng-site](https://github.com/xynova/stub-ng-site))
 * When change is found, it clones it to a work directory for that deployment and runs npm install, bower and gulp using short lived gulp-bower containers against it.
-* It creates a "Pause" that does nothing other than reserving an IP and a network namespace (Kubernetes way)
+* It then creates a "Pause" that does nothing other than reserving an IP and a network namespace (Kubernetes way)
 * Three more containers are then joined to the network namespace, one for the WebAp (nodejs), another one for its API (nodejs), and a third one (nginx) acting as a reverse proxy for the previous two.
 * Finally container-buddy is joined to the network namespace to help taking care of service registration aspects against etcd.
+* It wraps up by asking a host gateway container to reload its configuration and start routing traffic to the POD. 
+
+> ** Note: ** There are indeed quite a lot of few moving pieces in play, many of which just relate to plumbing service discover, health checking and desired state. With a platform like Kubernetes, the majority of these aspects are already covered by the system allowing us spend more time on the service itself instead of focusing on all that has to be deployed around it to run it.
 
 
 ## How to run it
