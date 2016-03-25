@@ -3,9 +3,9 @@
 ### A bit of context
 The current project shows an example of how we can run Ansible from within a container to orchestrate, monitor and keep desired state of a containerised work pipeline in a a truly auto-pilot spirit.
 
-When compared to shell scripts (which tend to become less readable once passed certain level of complexity), Ansible stands as a very easy to learn framework that can do all mighty things while keeping infrastructure overhead to a bare minimum. 
+When compared to shell scripts (which tend to become less readable once passed certain level of complexity), Ansible stands as a very easy to learn framework that can be all mighty while still keeping infrastructure overhead to a bare minimum. 
 
-The main field player here is an Docker detached container that continuously runs an Ansible Playbook with the following set of responsibilities:
+Within this project, it surfaces in a Docker detached container that continuously runs a Playbook with the following set of responsibilities:
  
 1. Monitor changes made to a Git repository branch and perform  rolling updates when new versions are found. 
 3. Maintain the deployment in a healthy state eve, specially across server reboots.
@@ -23,29 +23,24 @@ The main field player here is an Docker detached container that continuously run
 * The Ansible container continuously monitors a git repository node-app@([stub-ng-site](https://github.com/xynova/stub-ng-site))
 * When change is found, it clones it to a work directory for that deployment and runs npm install, bower and gulp using short lived gulp-bower containers against it.
 * It creates a "Pause" that does nothing other than reserving an IP and a network namespace (Kubernetes way)
-* Three more nodejs containers are then joined to the network namespace, one for the WebAp, another one for its API and a third one to route traffic and restrict direct access no the nodejs processes.
-* Finally an nginx reverse proxy (restricting direct access to the nodejs processes)
-* Adds a helper container named container-buddy which takes care of some aspects of the service discovery registration and monitoring against etcd.
-
-* Fires a second 
-
-
-to orchestrate a mini continuous build of a nodejs+angular application ([stub-ng-site](https://github.com/xynova/stub-ng-site)).
+* Three more containers are then joined to the network namespace, one for the WebAp (nodejs), another one for its API (nodejs), and a third one (nginx) acting as a reverse proxy for the previous two.
+* Finally container-buddy is joined to the network namespace to help taking care of service registration aspects against etcd.
 
 
 ## How to run it
 
 Clone the repo
->    `` git clone https://github.com/xynova/docker-autopilot-repo-watcher.git ``
->    `` cd docker-autopilot-repo-watcher ``
+``` shell
+git clone https://github.com/xynova/docker-autopilot-repo-watcher.git     cd docker-autopilot-repo-watcher 
+ ```
 
-Build the required docker images
+Create a tcp listener socket monitored by systemd
 
 ``` shell
 cd provision/docker-infra
 sudo ./docker-tcp-socket.sh
 ```
-Build the required docker images
+Add 4 Gb of swap to prevent any memory issues with small instance hosts (for example when executing gulp builds).
 
 ``` shell
 cd provision/docker-infra
