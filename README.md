@@ -33,9 +33,11 @@ Within this project, it surfaces in a Docker detached container that continuousl
 ## How to run it
 
 Clone the repo
+
 ``` shell
-git clone https://github.com/xynova/docker-autopilot-repo-watcher.git     cd docker-autopilot-repo-watcher 
- ```
+git clone https://github.com/xynova/docker-autopilot-repo-watcher.git
+cd docker-autopilot-repo-watcher 
+```
 
 Create a tcp listener socket monitored by systemd
 
@@ -66,5 +68,11 @@ Run containers
 ``` shell
 ./docker-containers/etcd.sh
 ./docker-containers/ansible-watch.sh 
+
+# You can monitor progress by executing a docker logs against the watcher container
+docker logs -f ansible-watchrepo
 ```
+
+Once a deployment has succeded, you should be able to `curl localhost` and see some Html markup.
+
 
