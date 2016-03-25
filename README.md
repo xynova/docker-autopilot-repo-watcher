@@ -8,16 +8,26 @@ When compared to shell scripts (which tend to become less readable once passed c
 The main field player here is an Docker detached container that continuously runs an Ansible Playbook with the following set of responsibilities:
  
 1. Monitor changes made to a Git repository branch and perform  rolling updates when new versions are found. 
-3. Maintain the deployment in a healthy state even across server reboots.
-4. Push notifications to a slack channel in order to report progress, success or failure if errors are encountered.
-5. Be a healthy citizen and clean up after every new deployment.
+3. Maintain the deployment in a healthy state eve, specially across server reboots.
+4. Push notifications to a slack channel in order to report deployment progress or errors when encountered.
+6. Glue all the moving parts together
+5. Behave like a good citizen and clean up after every new deployment.
+
 
 > **Note:** Talking to the docker Daemon sockets is a risky practice. When sharing hosts with multiple container workload, it is very important to impose restrictions on what those sockets can ask the daemon to do. Nevertheless, the general approach described in this project remains valid when dealing with more high-end platforms (like Kubernetes) that provide an APIs layer through which authentication and authorisation can be enforced. 
 
 
-### Components
-The main 
+### What is happening under the hood
 
+
+* The Ansible container continuously monitors a git repository node-app@([stub-ng-site](https://github.com/xynova/stub-ng-site))
+* When change is found, it clones it to a work directory for that deployment and runs npm install, bower and gulp using short lived gulp-bower containers against it.
+* It creates a "Pause" that does nothing other than reserving an IP and a network namespace (Kubernetes way)
+* 2 more nodejs containers are then joined to the network namespace, one for the WebApp and another one for its API
+* Fires up an nginx reverse proxy for the network pod (restricting direct access to the nodejs processes)
+* Adds a helper container named container-buddy which takes care of some aspects of the service discovery registration and monitoring against etcd.
+
+* Fires a second 
 
 
 to orchestrate a mini continuous build of a nodejs+angular application ([stub-ng-site](https://github.com/xynova/stub-ng-site)).
