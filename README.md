@@ -23,8 +23,8 @@ The main field player here is an Docker detached container that continuously run
 * The Ansible container continuously monitors a git repository node-app@([stub-ng-site](https://github.com/xynova/stub-ng-site))
 * When change is found, it clones it to a work directory for that deployment and runs npm install, bower and gulp using short lived gulp-bower containers against it.
 * It creates a "Pause" that does nothing other than reserving an IP and a network namespace (Kubernetes way)
-* 2 more nodejs containers are then joined to the network namespace, one for the WebApp and another one for its API
-* Fires up an nginx reverse proxy for the network pod (restricting direct access to the nodejs processes)
+* Three more nodejs containers are then joined to the network namespace, one for the WebAp, another one for its API and a third one to route traffic and restrict direct access no the nodejs processes.
+* Finally an nginx reverse proxy (restricting direct access to the nodejs processes)
 * Adds a helper container named container-buddy which takes care of some aspects of the service discovery registration and monitoring against etcd.
 
 * Fires a second 
