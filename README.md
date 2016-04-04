@@ -44,6 +44,7 @@ cd docker-autopilot-repo-watcher
 ``` shell
 cd provision/docker-infra
 sudo ./docker-tcp-socket.sh
+sudo ./disable-local-etcd.sh
 ```
 3) Add 4 Gb of swap to prevent any memory issues with small instance hosts (for example when executing gulp builds).
 
