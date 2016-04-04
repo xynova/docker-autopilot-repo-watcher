@@ -2,7 +2,7 @@
 
 
 DOCKER_GID=$(id docker -g) && cat << EOF | docker build -t ansible:latest -t ansible:local -
-FROM debian:latest
+FROM docker.io/library/debian:latest
 MAINTAINER Hector Maldonado (xynova)
 
 RUN apt-get update \

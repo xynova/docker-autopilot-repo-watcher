@@ -62,6 +62,7 @@ cd provision/docker-infra
 ./build-containerbuddy.sh
 ./build-nodejs-bower-gulp.sh
 ./build-etcd.sh
+./disable-local-etcd.sh
 ```
 
 5) Run containers
