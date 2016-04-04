@@ -32,20 +32,20 @@ Within this project, it surfaces in a Docker detached container that continuousl
 
 ## How to run it
 
-1. Clone the repo
+1) Clone the repo
 
 ``` shell
 git clone https://github.com/xynova/docker-autopilot-repo-watcher.git
 cd docker-autopilot-repo-watcher 
 ```
 
-2. Create a tcp listener socket monitored by systemd
+2) Create a tcp listener socket monitored by systemd
 
 ``` shell
 cd provision/docker-infra
 sudo ./docker-tcp-socket.sh
 ```
-3. Add 4 Gb of swap to prevent any memory issues with small instance hosts (for example when executing gulp builds).
+3) Add 4 Gb of swap to prevent any memory issues with small instance hosts (for example when executing gulp builds).
 
 ``` shell
 cd provision/docker-infra
@@ -53,7 +53,7 @@ sudo ./swapfile.sh
 ```
 
 
-4. Build the required docker images
+4) Build the required docker images
 
 ``` shell
 cd provision/docker-infra
@@ -64,7 +64,7 @@ cd provision/docker-infra
 ./build-etcd.sh
 ```
 
-5. Run containers
+5) Run containers
 
 ``` shell
 ./docker-containers/etcd.sh
