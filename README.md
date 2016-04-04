@@ -61,6 +61,7 @@ cd provision/docker-infra
 ./build-confd.sh
 ./build-containerbuddy.sh
 ./build-nodejs-bower-gulp.sh
+./build-etcd.sh
 ```
 
 Run containers
