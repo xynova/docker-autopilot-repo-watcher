@@ -4,7 +4,7 @@
   action:
     module: file
     path: "{{ NEW_GIT_DIR }}"
-    owner: 1000 
+    owner: 10000 
     recurse: true 
     mode: "g+rwx"
 
@@ -12,7 +12,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 1000:1000 \
+    -u 10000 \
     nodejs-bower-gulp sh -c "npm install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
@@ -21,8 +21,8 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 1000:1000 \
-    nodejs-bower-gulp sh -c "bower"
+    -u 10000 \
+    nodejs-bower-gulp sh -c "bower install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
  
@@ -30,6 +30,6 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 1000:1000 \
+    -u 10000 \
     nodejs-bower-gulp sh -c "gulp --silent"
 
