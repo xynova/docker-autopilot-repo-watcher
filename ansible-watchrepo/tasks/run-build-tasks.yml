@@ -13,7 +13,7 @@
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
     -u 10000 \
-    nodejs-bower-gulp sh -c "npm install"
+    nodejs-bower-gulp:local sh -c "npm install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
 
@@ -22,7 +22,7 @@
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
     -u 10000 \
-    nodejs-bower-gulp sh -c "bower install"
+    nodejs-bower-gulp:local sh -c "bower install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
  
@@ -31,5 +31,5 @@
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
     -u 10000 \
-    nodejs-bower-gulp sh -c "gulp --silent"
+    nodejs-bower-gulp:local sh -c "gulp --silent"
 

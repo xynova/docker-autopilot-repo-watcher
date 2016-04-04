@@ -1,7 +1,7 @@
 #! /bin/bash
 
 cat << EOF | docker build -t nodejs-bower-gulp:latest -t nodejs-bower-gulp:local -
-FROM node
+FROM docker.io/library/node
 RUN npm install -g bower gulp 
 
 RUN useradd --uid 10000 --create-home node \

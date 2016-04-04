@@ -57,12 +57,12 @@ sudo ./swapfile.sh
 
 ``` shell
 cd provision/docker-infra
+./disable-local-etcd.sh
 ./build-ansible.sh
 ./build-confd.sh
 ./build-containerbuddy.sh
 ./build-nodejs-bower-gulp.sh
-./build-etcd.sh
-./disable-local-etcd.sh
+./pull-other-images.sh
 ```
 
 5) Run containers
