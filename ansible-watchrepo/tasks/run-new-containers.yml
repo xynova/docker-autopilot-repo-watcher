@@ -21,6 +21,7 @@
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-app-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    -u 1000:1000 \
     node /usr/local/bin/node local-dev/appServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-app-{{ NEW_VERSION }}
   register: COMMAND_RESULT
@@ -33,6 +34,7 @@
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-api-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    -u 1000:1000 \
     node /usr/local/bin/node local-dev/apiServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-api-{{ NEW_VERSION }}
   register: COMMAND_RESULT
