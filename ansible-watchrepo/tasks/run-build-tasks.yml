@@ -12,7 +12,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    nodejs-bower-gulp sh -c "bower --allow-root install"
+    nodejs-bower-gulp sh -c "bower"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
  

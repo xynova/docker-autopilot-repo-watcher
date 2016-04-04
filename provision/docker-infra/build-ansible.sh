@@ -6,11 +6,11 @@ FROM debian:latest
 MAINTAINER Hector Maldonado (xynova)
 
 RUN apt-get update \
-	&&  apt-get install python-pip python-dev git -y #--no-install-recommends
+	&&  apt-get install -y python-pip python-dev git sudo vim
 
 RUN pip install PyYAML jinja2 paramiko
 
-RUN git clone https://github.com/ansible/ansible.git \
+RUN git clone https://github.com/ansible/ansible.git --recursive \
 	&& cd ansible \
 	&& make install
 

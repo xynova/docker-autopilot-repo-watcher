@@ -74,7 +74,7 @@
 - name: Wait for the POD to register with etcd
   uri: url=http://{{ HOST_IP }}:2379/v2/keys/containerbuddy/app-blue/app-blue-{{ APP_POD_ID_RESULT.stdout }}/service
   register: COMMAND_RESULT
-  until: COMMAND_RESULT.json.errorCode is undefined
+  until: COMMAND_RESULT.status == 200
   retries: 15
   delay: 5
   when: APP_POD_ID_RESULT is defined and APP_POD_ID_RESULT.stdout != ""
