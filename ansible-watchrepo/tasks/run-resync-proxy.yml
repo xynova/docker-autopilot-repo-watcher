@@ -5,7 +5,7 @@
     docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d -p 80:80 \
     -v {{ DOCKERDATA_DIR }}/gateway-nginx/:/etc/nginx/conf.d  \
     --name gateway-nginx \
-    docker.io/library/nginx \
+    docker.io/library/nginx:latest \
     || docker -H {{ DOCKER_HOST }} restart gateway-nginx
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -18,7 +18,7 @@
     -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd \
     -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd \
     --name gateway-confd \
-    confd:local -node http://{{ HOST_IP }}:2379 -watch -interval 1000 \
+    node.local/confd:latest -node http://{{ HOST_IP }}:2379 -watch -interval 1000 \
     || docker -H {{ DOCKER_HOST }} restart gateway-confd
   register: COMMAND_RESULT
   ignore_errors: true 

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-DOCKER_GID=$(id docker -g) && cat << EOF | docker build -t ansible:latest -t ansible:local -
+DOCKER_GID=$(id docker -g) && cat << EOF | docker build -t node.local/ansible:latest -
 FROM docker.io/library/debian:latest
 MAINTAINER Hector Maldonado (xynova)
 

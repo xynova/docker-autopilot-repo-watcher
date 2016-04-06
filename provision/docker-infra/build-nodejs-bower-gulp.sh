@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cat << EOF | docker build -t nodejs-bower-gulp:latest -t nodejs-bower-gulp:local -
+cat << EOF | docker build -t node.local/nodejs-bower-gulp:latest -
 FROM docker.io/library/node
 RUN npm install -g bower gulp 
 

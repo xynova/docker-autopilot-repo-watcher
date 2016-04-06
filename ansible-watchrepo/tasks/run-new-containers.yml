@@ -9,7 +9,7 @@
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped  --expose 80 \
     --label role=pod-head --label version={{ NEW_VERSION }} \
     --name=app-pod-pause-{{ NEW_VERSION }} \
-    docker.io/kubernetes/pause \ 
+    docker.io/kubernetes/pause:latest \
     || docker -H {{ DOCKER_HOST }} restart app-pod-pause-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -22,7 +22,7 @@
     --name app-pod-app-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
     -u 10001 \
-    docker.io/library/node /usr/local/bin/node local-dev/appServer \
+    docker.io/library/node:latest /usr/local/bin/node local-dev/appServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-app-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -35,7 +35,7 @@
     --name app-pod-api-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
     -u 10001 \
-    docker.io/library/node /usr/local/bin/node local-dev/apiServer \
+    docker.io/library/node:latest /usr/local/bin/node local-dev/apiServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-api-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -47,7 +47,7 @@
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-nginx-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro \
-    docker.io/library/nginx \
+    docker.io/library/nginx:latest \
     || docker -H {{ DOCKER_HOST }} restart app-pod-nginx-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -60,7 +60,7 @@
     --name app-pod-buddy-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro \
     -e HOST_IP={{ HOST_IP }} \
-    containerbuddy:local \
+    node.local/containerbuddy:latest \
     || docker -H {{ DOCKER_HOST }} restart app-pod-buddy-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
