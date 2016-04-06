@@ -39,12 +39,13 @@ git clone https://github.com/xynova/docker-autopilot-repo-watcher.git
 cd docker-autopilot-repo-watcher 
 ```
 
-2) Create a tcp listener socket monitored by systemd
+2) Create a tcp listener socket monitored by systemd and tail all docker logs to journald (Prepared for CoreOS)
 
 ``` shell
 cd provision/docker-infra
-sudo ./docker-tcp-socket.sh
 sudo ./disable-local-etcd.sh
+sudo ./docker-tcp-socket.sh
+sudo ./docker-opts.sh
 ```
 3) Add 4 Gb of swap to prevent any memory issues with small instance hosts (for example when executing gulp builds).
 
