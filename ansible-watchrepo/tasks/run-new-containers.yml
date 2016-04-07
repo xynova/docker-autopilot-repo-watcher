@@ -48,7 +48,6 @@
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-nginx-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
     -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro \
-    -u {{ UID_SERVICES }} \
     docker.io/library/nginx:latest \
     || docker -H {{ DOCKER_HOST }} restart app-pod-nginx-{{ NEW_VERSION }}
   register: COMMAND_RESULT
@@ -83,8 +82,5 @@
   retries: 15
   delay: 5
   when: APP_POD_ID_RESULT is defined and APP_POD_ID_RESULT.stdout != ""
-
-
-
 
 

@@ -22,11 +22,16 @@
        force=true
   tags: clone
 
-- name: Change ownership of the repo directory before builds start
+- name: Change ownership of the project repo
   action:
     module: file
     path: "{{ NEW_GIT_DIR }}"
     owner: "{{ UID_BUILDS }}" 
     recurse: true 
-    mode: "g+rwx"
 
+- name: Change ownership of the config directories
+  action:
+    module: file
+    path: "{{ DOCKERDATA_DIR }}"
+    owner: "{{ UID_SERVICES }}" 
+    recurse: true 
