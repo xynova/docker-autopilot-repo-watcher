@@ -1,18 +1,10 @@
 ---
 
-- name: Change ownership of the repo directory before builds start
-  action:
-    module: file
-    path: "{{ NEW_GIT_DIR }}"
-    owner: 10000 
-    recurse: true 
-    mode: "g+rwx"
-
 - name: Ensure npm packages are installed
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 10000 \
+    -u {{ UID_BUILDS }} \
     node.local/nodejs-bower-gulp:latest sh -c "npm install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
@@ -21,7 +13,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 10000 \
+    -u {{ UID_BUILDS }} \
     node.local/nodejs-bower-gulp:latest sh -c "bower install"
   register: RESULT
   changed_when: "RESULT.stdout != ''"
@@ -30,6 +22,6 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run \
     --rm -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
-    -u 10000 \
+    -u {{ UID_BUILDS }} \
     node.local/nodejs-bower-gulp:latest sh -c "gulp --silent"
 

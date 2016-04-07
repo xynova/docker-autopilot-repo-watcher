@@ -1,8 +1,8 @@
 - name: Notify start via Slack
   include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Starting Build for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}"
 
-- name: Prepare working directory
-  include: prepare-working-directory.yml
+- name: Prepare work directories
+  include: prepare-work-directories.yml
 
 - name: Execute build tasks
   include: run-build-tasks.yml

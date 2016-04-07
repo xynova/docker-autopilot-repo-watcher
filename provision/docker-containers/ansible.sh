@@ -22,5 +22,5 @@ docker run -it --rm \
         -e SLACK_CHANNEL=$SLACK_CHANNEL \
         -e GIT_WATCHED_REPO_URL=$GIT_WATCHED_REPO_URL \
 	--name ansible-watchrepo \
-	ansible bash 
+	node.local/ansible /bin/bash 
 
