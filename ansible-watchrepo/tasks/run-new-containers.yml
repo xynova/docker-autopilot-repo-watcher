@@ -21,7 +21,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-app-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    -v {{ NEW_GIT_DIR }}:/UI:ro,z --workdir /UI \
     -u {{ UID_SERVICES }} \
     docker.io/library/node:latest /usr/local/bin/node local-dev/appServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-app-{{ NEW_VERSION }}
@@ -34,7 +34,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-api-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v {{ NEW_GIT_DIR }}:/UI --workdir /UI \
+    -v {{ NEW_GIT_DIR }}:/UI:ro,z --workdir /UI \
     -u {{ UID_SERVICES }} \
     docker.io/library/node:latest /usr/local/bin/node local-dev/apiServer \
     || docker -H {{ DOCKER_HOST }} restart app-pod-api-{{ NEW_VERSION }}
@@ -47,7 +47,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-nginx-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro \
+    -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro,Z \
     docker.io/library/nginx:latest \
     || docker -H {{ DOCKER_HOST }} restart app-pod-nginx-{{ NEW_VERSION }}
   register: COMMAND_RESULT
@@ -59,7 +59,7 @@
   shell: |
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
     --name app-pod-buddy-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro \
+    -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro,Z \
     -e HOST_IP={{ HOST_IP }} \
     -u {{ UID_SERVICES }} \
     node.local/containerbuddy:latest \
