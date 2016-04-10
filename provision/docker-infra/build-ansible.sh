@@ -10,7 +10,7 @@ RUN apt-get update \
 
 RUN pip install PyYAML jinja2 paramiko
 
-RUN git clone https://github.com/ansible/ansible.git --recursive \
+RUN git clone -b stable-2.0.0.1 https://github.com/ansible/ansible.git --recursive \
 	&& cd ansible \
 	&& make install
 
