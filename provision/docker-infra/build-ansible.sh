@@ -8,7 +8,7 @@ MAINTAINER Hector Maldonado (xynova)
 RUN apt-get update \
 	&&  apt-get install -y python-pip python-dev git sudo vim
 
-RUN pip install PyYAML jinja2 paramiko
+RUN pip install PyYAML jinja2 paramiko httplib2
 
 RUN git clone -b stable-2.0.0.1 https://github.com/ansible/ansible.git --recursive \
 	&& cd ansible \
