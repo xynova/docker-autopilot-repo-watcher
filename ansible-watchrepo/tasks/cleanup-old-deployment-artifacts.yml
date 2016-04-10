@@ -26,12 +26,3 @@
     state: absent
   with_items: "{{ DIR_LIST.stdout_lines }}" 
 
-#- name: Remove containers by ID
-#  shell: |
-#     docker rm -f {{ item }}
-#  with_items: ID_LIST
-#  ignore_errors: true
-#
-#- name: Cleanup old git cloned repositories
-#  file: path={{ OLD_GIT_DIR }} state=absent
-#  when:  OLD_VERSION != ''
