@@ -1,20 +1,24 @@
 ---
 
 - name: Get Old version container IDs
-  shell: |
-     APP_POD_ID=$(docker -H {{ DOCKER_HOST }} ps --filter label=version --filter name=app-pod-pause-{{ NEW_VERSION }} -q) \
-     && docker  -H {{ DOCKER_HOST }} ps --filter label=version --filter before=$APP_POD_ID --filter name=app-pod- -q
+  shell: >
+     APP_POD_ID=$(docker -H {{ DOCKER_HOST }} ps --filter label=version --filter name=app-pod-pause-{{ NEW_VERSION }} -q) 
+     && docker  -H {{ DOCKER_HOST }} ps 
+     --filter label=version 
+     --filter before=$APP_POD_ID 
+     --filter name=app-pod- -q
   register: ID_LIST
   ignore_errors: true
   changed_when: false
 
 - name: Remove Old containers by ID
-  shell: |
-    docker -H {{ DOCKER_HOST }} stop {{ item }} && docker -H {{ DOCKER_HOST }} rm -f {{ item }}
+  shell: >
+    docker -H {{ DOCKER_HOST }} stop {{ item }} 
+    && docker -H {{ DOCKER_HOST }} rm -f {{ item }}
   with_items: "{{ ID_LIST.stdout_lines }}"
 
 - name: Get a list of old git repo dirs
-  shell: |
+  shell: >
     ls {{ GITREPOS_DIR }} | grep {{ NEW_VERSION }} --invert-match
   register: DIR_LIST
   changed_when: false

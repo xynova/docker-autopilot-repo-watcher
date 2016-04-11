@@ -5,12 +5,14 @@
     NETWORK_CONTAINER: "app-pod-pause-{{ NEW_VERSION }}"
 
 - name: Run new Pause container to initialize the POD
-  shell: |
-    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped  --expose 80 \
-    --label role=pod-head --label version={{ NEW_VERSION }} \
-    --name=app-pod-pause-{{ NEW_VERSION }} \
-    -u {{ UID_SERVICES }} \
-    docker.io/kubernetes/pause:latest \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped  
+    --expose 80 
+    --label role=pod-head 
+    --label version={{ NEW_VERSION }} 
+    --name=app-pod-pause-{{ NEW_VERSION }} 
+    -u {{ UID_SERVICES }} 
+    docker.io/kubernetes/pause:latest 
     || docker -H {{ DOCKER_HOST }} restart app-pod-pause-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -18,12 +20,15 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Run new App Layouts Container and join it to the POD network
-  shell: |
-    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
-    --name app-pod-app-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v {{ NEW_GIT_DIR }}:/UI:ro,z --workdir /UI \
-    -u {{ UID_SERVICES }} \
-    docker.io/library/node:latest /usr/local/bin/node local-dev/appServer \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --name app-pod-app-{{ NEW_VERSION }} 
+    --label version={{ NEW_VERSION }} 
+    -v {{ NEW_GIT_DIR }}:/UI:ro,z 
+    --workdir /UI 
+    -u {{ UID_SERVICES }} 
+    docker.io/library/node:latest 
+    /usr/local/bin/node local-dev/appServer 
     || docker -H {{ DOCKER_HOST }} restart app-pod-app-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -31,12 +36,15 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Run new App API Container and join it to the POD network
-  shell: |
-    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
-    --name app-pod-api-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v {{ NEW_GIT_DIR }}:/UI:ro,z --workdir /UI \
-    -u {{ UID_SERVICES }} \
-    docker.io/library/node:latest /usr/local/bin/node local-dev/apiServer \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --name app-pod-api-{{ NEW_VERSION }} 
+    --label version={{ NEW_VERSION }} 
+    -v {{ NEW_GIT_DIR }}:/UI:ro,z 
+    --workdir /UI 
+    -u {{ UID_SERVICES }} 
+    docker.io/library/node:latest 
+    /usr/local/bin/node local-dev/apiServer 
     || docker -H {{ DOCKER_HOST }} restart app-pod-api-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -44,11 +52,12 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Run nginx to route traffic and join it to the POD network
-  shell: |
-    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
-    --name app-pod-nginx-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro,Z \
-    docker.io/library/nginx:latest \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --name app-pod-nginx-{{ NEW_VERSION }} 
+    --label version={{ NEW_VERSION }} 
+    -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro,Z 
+    docker.io/library/nginx:latest 
     || docker -H {{ DOCKER_HOST }} restart app-pod-nginx-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -56,13 +65,14 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Run containerbuddy to register the POD with etcd
-  shell: |
-    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" \
-    --name app-pod-buddy-{{ NEW_VERSION }} --label version={{ NEW_VERSION }} \
-    -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro,Z \
-    -e HOST_IP={{ HOST_IP }} \
-    -u {{ UID_SERVICES }} \
-    node.local/containerbuddy:latest \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --name app-pod-buddy-{{ NEW_VERSION }} 
+    --label version={{ NEW_VERSION }} 
+    -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro,Z 
+    -e HOST_IP={{ HOST_IP }} 
+    -u {{ UID_SERVICES }} 
+    node.local/containerbuddy:latest 
     || docker -H {{ DOCKER_HOST }} restart app-pod-buddy-{{ NEW_VERSION }}
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -70,8 +80,10 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Get POD container ID
-  shell: |
-    docker -H {{ DOCKER_HOST }} ps --filter label=version --filter name=app-pod-pause-{{ NEW_VERSION }} -q
+  shell: >
+    docker -H {{ DOCKER_HOST }} ps -q
+    --filter label=version 
+    --filter name=app-pod-pause-{{ NEW_VERSION }} 
   register: APP_POD_ID_RESULT
   changed_when: false
 

@@ -1,11 +1,12 @@
 ---
 
 - name: Ensure gateway proxy service
-  shell: |
-    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d -p 80:80 \
-    -v {{ DOCKERDATA_DIR }}/gateway-nginx/:/etc/nginx/conf.d:z  \
-    --name gateway-nginx \
-    docker.io/library/nginx:latest \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d 
+    -p 80:80 
+    -v {{ DOCKERDATA_DIR }}/gateway-nginx/:/etc/nginx/conf.d:z  
+    --name gateway-nginx 
+    docker.io/library/nginx:latest 
     || docker -H {{ DOCKER_HOST }} restart gateway-nginx
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -13,13 +14,14 @@
   changed_when: COMMAND_RESULT.stdout != ""
 
 - name: Process new gateway proxy configuration from etcd
-  shell: |
-    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d  \
-    -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd:z \
-    -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd:z \
-    -u {{ UID_SERVICES }} \
-    --name gateway-confd \
-    node.local/confd:latest -node http://{{ HOST_IP }}:2379 -watch -interval 1000 \
+  shell: >
+    docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d  
+    -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd:z 
+    -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd:z 
+    -u {{ UID_SERVICES }} 
+    --name gateway-confd 
+    node.local/confd:latest 
+    -node http://{{ HOST_IP }}:2379 -watch -interval 1000 
     || docker -H {{ DOCKER_HOST }} restart gateway-confd
   register: COMMAND_RESULT
   ignore_errors: true 
@@ -27,5 +29,6 @@
   changed_when: COMMAND_RESULT.stderr != ""
 
 - name: Reload gateway proxy so it reads new reload configuration
-  shell: |
-    docker -H {{ DOCKER_HOST }} exec gateway-nginx /usr/sbin/nginx -s reload 
+  shell: >
+    docker -H {{ DOCKER_HOST }} exec gateway-nginx 
+    /usr/sbin/nginx -s reload 
