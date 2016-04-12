@@ -1,20 +1,5 @@
 ---
 
-- name: Prepare context
-  set_fact: 
-    NEW_GIT_DIR: "{{ GITREPOS_DIR }}/git-data-{{ NEW_VERSION }}"
-    OLD_GIT_DIR: "{{ GITREPOS_DIR }}/home/core/git-data-{{ OLD_VERSION }}"
-  changed_when: false
-
-- debug: var={{ item }}
-  with_items:
-    - GITREPOS_DIR 
-    - DOCKERDATA_DIR
-    - HOST_IP
-    - NEW_GIT_DIR
-    - NEW_VERSION 
-    - OLD_VERSION 
-
 - name: Clone project repo "{{ GIT_WATCHED_REPO_DIR }}"
   git: repo={{ GIT_WATCHED_REPO_DIR }}
        dest={{ NEW_GIT_DIR }}

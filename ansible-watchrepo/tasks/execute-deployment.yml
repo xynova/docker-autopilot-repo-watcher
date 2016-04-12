@@ -1,35 +1,38 @@
-- name: Notify start via Slack
+- name: (INCLUDE) Notify start via Slack
   include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Starting Build for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}"
 
-- name: Prepare work directories
+- name: (INCLUDE) Prepare context
+  include: prepare-context.yml
+
+- name: (INCLUDE) Prepare work directories
   include: prepare-work-directories.yml
 
-- name: Execute build tasks
+- name: (INCLUDE) Execute build tasks
   include: run-build-tasks.yml
   tags: build
 
-- name: Notify start via Slack
+- name: (INCLUDE) Notify start via Slack
   include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Ensuring pod services for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}"
 
-- name: Run new version containers
+- name: (INCLUDE) Run new version containers
   include: run-new-containers.yml
   tags: provision
 
-- name: Resync loadbalancing gateway
+- name: (INCLUDE) Resync loadbalancing gateway
   include: run-resync-proxy.yml
   tags: resync
 
-- name: Do health checks
+- name: (INCLUDE) Do health checks
   debug: msg="should do health check"
   tags: health
 
-- name: Cleanup previous deployments
+- name: (INCLUDE) Cleanup previous deployments
   include: cleanup-old-deployment-artifacts.yml
   tags: cleanup
 
-- name: Resync loadbalancing gateway
+- name: (INCLUDE) Resync loadbalancing gateway
   include: run-resync-proxy.yml
   tags: resync
 
-- name: Notify completion via Slack
+- name: (INCLUDE) Notify completion via Slack
   include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Deployment {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }} is complete"

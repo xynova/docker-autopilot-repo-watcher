@@ -1,0 +1,19 @@
+---
+
+- name: Prepare context
+  set_fact: 
+    NEW_GIT_DIR: "{{ GITREPOS_DIR }}/git-data-{{ NEW_VERSION }}"
+    DEPLOYMENT_GROUP: "{{ GITREPOS_DIR }}"
+  changed_when: false
+
+- debug: var={{ item }}
+  with_items:
+    - GIT_WATCHED_REPO_DIR
+    - GIT_WATCHED_REPO_BRANCH
+    - GITREPOS_DIR 
+    - DOCKERDATA_DIR
+    - HOST_IP
+    - NEW_GIT_DIR
+    - NEW_VERSION 
+    - OLD_VERSION 
+

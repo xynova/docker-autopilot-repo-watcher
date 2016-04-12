@@ -10,8 +10,14 @@
   - name: NEW_VERSION
     prompt: What is the last commit id that should be preserved?
     private: false
+  - name: DEPLOYMENT_GROUP
+    prompt: Target deployment group to be garbage collected?
+    private: false
 
   tasks:
+  - name: Set vars
+    set_fact:
+      NETWORK_CONTAINER: pod-net-{{ NEW_VERSION }}
   - name: Cleanup
     include: tasks/cleanup-old-deployment-artifacts.yml
     when: NEW_VERSION != ''

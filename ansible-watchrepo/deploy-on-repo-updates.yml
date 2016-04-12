@@ -17,13 +17,13 @@
         when: COMMAND_RESULT | failed
         changed_when: COMMAND_RESULT | failed
 
-      - name: Pull latest repo
+      - name: (INCLUDE) Pull latest repo
         include: tasks/pull-latest-repo.yml
 
-      - name: If repo has changed or the FORCE param equals true, then run a new deployment
+      - name: (INCLUDE) If repo has changed or the FORCE param equals true, then run a new deployment
         include: tasks/execute-deployment.yml
         when: "NEW_VERSION != OLD_VERSION or FORCE == true"
 
       rescue:
-      - name: Reset cloned repo to a workable state
+      - name: (INCLUDE) Reset cloned repo to a workable state
         include: tasks/reset-repo-to-workable-state.yml
