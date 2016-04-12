@@ -6,6 +6,7 @@
       -v {{ NEW_GIT_DIR }}:/UI:z 
       --workdir /UI 
       -u {{ UID_BUILDS }} 
+      --cap-drop=all 
       node.local/nodejs-bower-gulp:latest 
       sh -c "npm install"
   register: RESULT
@@ -17,6 +18,7 @@
     -v {{ NEW_GIT_DIR }}:/UI:z 
     --workdir /UI 
     -u {{ UID_BUILDS }} 
+    --cap-drop=all 
     node.local/nodejs-bower-gulp:latest 
     sh -c "bower install"
   register: RESULT
@@ -28,6 +30,7 @@
     -v {{ NEW_GIT_DIR }}:/UI:z 
     --workdir /UI 
     -u {{ UID_BUILDS }} 
+    --cap-drop=all 
     node.local/nodejs-bower-gulp:latest 
     sh -c "gulp --silent"
 

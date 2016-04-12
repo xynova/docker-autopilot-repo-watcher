@@ -17,6 +17,7 @@
     --label group={{ DEPLOYMENT_GROUP }}
     --name={{ NETWORK_CONTAINER }} 
     -u {{ UID_SERVICES }} 
+    --cap-drop=all 
     docker.io/kubernetes/pause:latest 
     || docker -H {{ DOCKER_HOST }} restart {{ NETWORK_CONTAINER }}
   register: COMMAND_RESULT
@@ -33,6 +34,7 @@
     -v {{ NEW_GIT_DIR }}:/UI:ro,z 
     --workdir /UI 
     -u {{ UID_SERVICES }} 
+    --cap-drop=all 
     docker.io/library/node:latest 
     /usr/local/bin/node local-dev/appServer 
     || docker -H {{ DOCKER_HOST }} restart {{ UI_CONTAINER }}
@@ -50,6 +52,7 @@
     -v {{ NEW_GIT_DIR }}:/UI:ro,z 
     --workdir /UI 
     -u {{ UID_SERVICES }} 
+    --cap-drop=all 
     docker.io/library/node:latest 
     /usr/local/bin/node local-dev/apiServer 
     || docker -H {{ DOCKER_HOST }} restart {{ API_CONTAINER }}
@@ -81,6 +84,7 @@
     -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro,Z 
     -e HOST_IP={{ HOST_IP }} 
     -u {{ UID_SERVICES }} 
+    --cap-drop=all 
     node.local/containerbuddy:latest 
     || docker -H {{ DOCKER_HOST }} restart {{ MONITOR_CONTAINER }}
   register: COMMAND_RESULT
