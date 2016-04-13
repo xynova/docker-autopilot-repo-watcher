@@ -16,16 +16,16 @@ docker run -it --rm \
 	-v $(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}'):/usr/lib/libdevmapper.so.1.02:ro \
 	--security-opt label:disable \
 	-v $REPO_VOL:$REPO_VOL \
- 	-v $CONFIG_VOL:$CONFIG_VOL \
+	-v $CONFIG_VOL:$CONFIG_VOL \
 	-v $ANSIBLE_VOL:/home/ansible \
 	-e GITREPOS_DIR=$REPO_VOL \
 	-e GIT_WATCHED_REPO_BRANCH=$GIT_WATCHED_REPO_BRANCH \
 	-e DOCKERDATA_DIR=$CONFIG_VOL \
 	-e HOST_IP=$HOST_IP \
 	-e DOCKER_HOST="tcp://${HOST_IP}:2375" \
-        -e SLACK_TOKEN=$SLACK_TOKEN \
-        -e SLACK_CHANNEL=$SLACK_CHANNEL \
-        -e GIT_WATCHED_REPO_URL=$GIT_WATCHED_REPO_URL \
+	-e SLACK_TOKEN=$SLACK_TOKEN \
+	-e SLACK_CHANNEL=$SLACK_CHANNEL \
+	-e GIT_WATCHED_REPO_URL=$GIT_WATCHED_REPO_URL \
 	--name ansible-watchrepo \
 	node.local/ansible /bin/bash 
 
