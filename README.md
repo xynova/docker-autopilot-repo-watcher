@@ -70,7 +70,7 @@ cd provision/docker-infra
 5) Run containers
 
 ``` shell
-./docker-containers/etcd.sh
+sudo ./docker-containers/etcd.sh
 ./docker-containers/ansible-watch.sh 
 
 # You can monitor progress by executing a docker logs against the watcher container
