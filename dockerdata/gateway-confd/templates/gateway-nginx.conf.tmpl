@@ -1,9 +1,10 @@
 
 {{ range $app := lsdir "/" }}
 upstream {{ $app }} {
+	least_conn;
 	{{ range $inst := lsdir (print "/" $app)  }}
 	{{ $service := json (getv (print "/" $app "/" $inst "/service" )) }}
-	server {{  $service.address  }}:{{  $service.port  }};
+	server {{  $service.address  }}:{{  $service.port  }} max_fails=3 fail_timeout=60 weight=1;
 	{{ end }}
 }
 {{ end }}

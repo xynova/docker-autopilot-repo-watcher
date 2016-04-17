@@ -28,5 +28,5 @@ docker run --restart unless-stopped -d \
 	-e SLACK_TOKEN=$SLACK_TOKEN \
 	-e SLACK_CHANNEL=$SLACK_CHANNEL \
 	-e GIT_WATCHED_REPO_URL=$GIT_WATCHED_REPO_URL \
-        --name ansible-watchrepo \
+        --name "ansible-watch-$DEPLOYMENT_GROUP" \
 	node.local/ansible /bin/bash -c './deploy-on-repo-updates.sh; sleep 60;'
