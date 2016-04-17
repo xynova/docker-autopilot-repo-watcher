@@ -6,6 +6,7 @@ SLACK_TOKEN=
 SLACK_CHANNEL=
 GIT_WATCHED_REPO_URL=https://github.com/xynova/stub-ng-site.git
 GIT_WATCHED_REPO_BRANCH=master
+DEPLOYMENT_GROUP=master-branch
 
 ANSIBLE_VOL=$WORK_DIR/ansible-watchrepo
 CONFIG_VOL=$WORK_DIR/dockerdata
@@ -18,6 +19,7 @@ docker run -it --rm \
 	-v $REPO_VOL:$REPO_VOL \
 	-v $CONFIG_VOL:$CONFIG_VOL \
 	-v $ANSIBLE_VOL:/home/ansible \
+	-e DEPLOYMENT_GROUP=$DEPLOYMENT_GROUP \
 	-e GITREPOS_DIR=$REPO_VOL \
 	-e GIT_WATCHED_REPO_BRANCH=$GIT_WATCHED_REPO_BRANCH \
 	-e DOCKERDATA_DIR=$CONFIG_VOL \

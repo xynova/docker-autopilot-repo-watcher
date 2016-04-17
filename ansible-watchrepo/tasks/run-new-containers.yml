@@ -83,6 +83,7 @@
     --name {{ MONITOR_CONTAINER }} 
     -v "{{ DOCKERDATA_DIR }}/app-containerbuddy":/etc/containerbuddy:ro,Z 
     -e HOST_IP={{ HOST_IP }} 
+    -e DEPLOYMENT_GROUP={{ DEPLOYMENT_GROUP }}
     -u {{ UID_SERVICES }} 
     --cap-drop=all 
     node.local/containerbuddy:latest 
@@ -94,14 +95,16 @@
 
 - name: Get POD network namespace container ID
   shell: >
-    docker -H {{ DOCKER_HOST }} ps -q
+    CONTAINER_ID=$(docker -H {{ DOCKER_HOST }} ps -q
     --filter label=version 
     --filter name={{ NETWORK_CONTAINER }} 
-  register: APP_POD_ID_RESULT
+    --filter group={{ DEPLOYMENT_GROUP }})
+    && docker -H {{ DOCKER_HOST }} inspect --format {% raw %}'{{ .Config.Hostname }}'{% endraw %} $CONTAINER_ID
+  register: POD_HOSTNAME
   changed_when: false
 
 - name: Wait for the network POD to register with etcd
-  uri: url=http://{{ HOST_IP }}:2379/v2/keys/containerbuddy/app-blue/app-blue-{{ APP_POD_ID_RESULT.stdout }}/service
+  uri: url=http://{{ HOST_IP }}:2379/v2/keys/containerbuddy/{{ DEPLOYMENT_GROUP }}/{{ DEPLOYMENT_GROUP }}-{{ POD_HOSTNAME.stdout }}/service
   register: COMMAND_RESULT
   until: COMMAND_RESULT.status == 200
   retries: 15

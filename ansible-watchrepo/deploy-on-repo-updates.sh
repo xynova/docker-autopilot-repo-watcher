@@ -2,6 +2,7 @@
 scriptdir=$(cd "$(dirname $0)"; pwd)
 
 ansible-playbook \
+	-e DEPLOYMENT_GROUP=$DEPLOYMENT_GROUP \
 	-e GITREPOS_DIR=$GITREPOS_DIR \
 	-e DOCKERDATA_DIR=$DOCKERDATA_DIR \
 	-e GIT_WATCHED_REPO_URL="$GIT_WATCHED_REPO_URL" \

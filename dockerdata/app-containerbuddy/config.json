@@ -9,7 +9,7 @@
   , "postStop": "echo post stop"
   , "services": [
     {
-    "name": "app-blue"
+    "name": "{{ .DEPLOYMENT_GROUP }}"
     , "port": 80
     , "health": "/etc/containerbuddy/health-probe.sh"
     , "poll": 5
