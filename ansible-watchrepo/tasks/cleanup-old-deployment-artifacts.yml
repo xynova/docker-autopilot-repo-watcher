@@ -4,12 +4,12 @@
   shell: >
      APP_POD_ID=$(docker -H {{ DOCKER_HOST }} ps 
      --filter label=version 
+     --filter label=group={{ DEPLOYMENT_GROUP }}
      --filter name={{ NETWORK_CONTAINER }} 
-     --filter group={{ DEPLOYMENT_GROUP }}
      -q) 
      && docker  -H {{ DOCKER_HOST }} ps 
      --filter label=version 
-     --filter group={{ DEPLOYMENT_GROUP }}
+     --filter label=group={{ DEPLOYMENT_GROUP }}
      --filter before=${APP_POD_ID:=EmptyID}
      -q
   register: ID_LIST
