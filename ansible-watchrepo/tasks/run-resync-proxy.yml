@@ -13,11 +13,16 @@
   failed_when: "COMMAND_RESULT.stderr and 'is already in use by container' not in COMMAND_RESULT.stderr"
   changed_when: COMMAND_RESULT.stdout != ""
 
+- name: Ensure gateway configuration for deployment group
+  template:
+    src: "{{ DOCKERDATA_DIR }}/gateway-confd/conf.d/generation-task.toml.j2"
+    dest: "{{ DOCKERDATA_DIR }}/gateway-confd/conf.d/{{ DEPLOYMENT_GROUP }}-task.toml"
+
 - name: Process new gateway proxy configuration from etcd
   shell: >
     docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d  
     -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd:z 
-    -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd:z 
+    -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd-results:z 
     -u {{ UID_SERVICES }} 
     --cap-drop=all
     --name gateway-confd 

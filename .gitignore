@@ -18,5 +18,6 @@ Session.vim
 .viminfo
 gitrepos/
 watchedrepo/
-nginx.gateway.conf
+*.gateway.conf
+*-task.toml
 *.retry

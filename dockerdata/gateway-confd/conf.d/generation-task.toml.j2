@@ -1,0 +1,5 @@
+[template]
+src = "gateway-nginx.conf.tmpl"
+dest = "/tmp/confd-results/{{ DEPLOYMENT_GROUP }}.gateway.conf"
+prefix = "/containerbuddy"
+keys = ["/{{ DEPLOYMENT_GROUP }}"]
