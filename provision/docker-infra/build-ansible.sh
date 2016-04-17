@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 DOCKER_BIN=$(which docker)
 LIBDEV_BIN=$(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}')

@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 DATA_DIR=/var/lib/etcd/data
 WRITE_AHEAD_LOG_DIR=/var/lib/etcd/wal

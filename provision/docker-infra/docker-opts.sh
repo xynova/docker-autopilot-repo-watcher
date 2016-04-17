@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 DIR=/etc/systemd/system/docker.service.d
 

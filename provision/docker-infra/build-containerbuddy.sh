@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 cat << EOF | docker build -t node.local/containerbuddy:latest -
 FROM docker.io/library/debian:latest

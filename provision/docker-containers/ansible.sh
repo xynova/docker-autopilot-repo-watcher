@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 WORK_DIR=$(git rev-parse --show-toplevel)
 HOST_IP=$(ip addr | grep 'state UP' -A2 | grep -P [^\\w]+eth0 | tail -1 | awk '{print $2}' | cut -f1  -d'/')

@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 cat << EOF > /etc/systemd/system/docker-tcp.socket
 [Unit]

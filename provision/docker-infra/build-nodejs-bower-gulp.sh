@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 cat << EOF | docker build -t node.local/nodejs-bower-gulp:latest -
 FROM docker.io/library/node
