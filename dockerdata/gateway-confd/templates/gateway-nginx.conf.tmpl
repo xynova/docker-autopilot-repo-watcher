@@ -11,12 +11,12 @@ upstream {{ $app }} {
 
 server {
     listen       80;
-    server_name  _;
+{{ range $app := lsdir "/" }}
+    server_name  {{ $app }}.*;
 
- {{ range $app := lsdir "/" }}
     location / {
         proxy_pass http://{{ $app }}/;
         proxy_redirect off;
     }
-    {{end}}
+{{end}}
 }
