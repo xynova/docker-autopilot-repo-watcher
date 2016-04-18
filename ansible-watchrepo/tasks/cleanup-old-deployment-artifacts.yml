@@ -36,3 +36,7 @@
     state: absent
   with_items: "{{ DIR_LIST.stdout_lines }}" 
 
+- name: Remove dangling docker volumes
+  shell: >
+    VOLUMES=$(docker -H {{ DOCKER_HOST }} volume ls -qf dangling=true)
+    && docker -H {{ DOCKER_HOST }} volume rm $VOLUMES

@@ -11,13 +11,14 @@
 - name: Run NETWORK container to initialize the POD
   shell: >
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped  
+    --read-only
+    --cap-drop=all 
     --expose 80 
     --label role=network 
     --label version={{ NEW_VERSION }} 
     --label group={{ DEPLOYMENT_GROUP }}
     --name={{ NETWORK_CONTAINER }} 
     -u {{ UID_SERVICES }} 
-    --cap-drop=all 
     docker.io/kubernetes/pause:latest 
     || docker -H {{ DOCKER_HOST }} restart {{ NETWORK_CONTAINER }}
   register: COMMAND_RESULT
@@ -28,13 +29,14 @@
 - name: Run UI container and join it to the POD network
   shell: >
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --read-only
+    --cap-drop=all 
     --label version={{ NEW_VERSION }} 
     --label group={{ DEPLOYMENT_GROUP }}
     --name {{ UI_CONTAINER }} 
     -v {{ NEW_GIT_DIR }}:/UI:ro,z 
     --workdir /UI 
     -u {{ UID_SERVICES }} 
-    --cap-drop=all 
     docker.io/library/node:latest 
     /usr/local/bin/node local-dev/appServer 
     || docker -H {{ DOCKER_HOST }} restart {{ UI_CONTAINER }}
@@ -46,13 +48,14 @@
 - name: Run API container and join it to the POD network
   shell: >
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --read-only
+    --cap-drop=all 
     --label version={{ NEW_VERSION }} 
     --label group={{ DEPLOYMENT_GROUP }}
     --name {{ API_CONTAINER }} 
     -v {{ NEW_GIT_DIR }}:/UI:ro,z 
     --workdir /UI 
     -u {{ UID_SERVICES }} 
-    --cap-drop=all 
     docker.io/library/node:latest 
     /usr/local/bin/node local-dev/apiServer 
     || docker -H {{ DOCKER_HOST }} restart {{ API_CONTAINER }}
@@ -64,10 +67,13 @@
 - name: Run PROXY Container to route traffic and join it to the POD network
   shell: >
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --read-only
     --label version={{ NEW_VERSION }} 
     --label group={{ DEPLOYMENT_GROUP }}
     --name {{ PROXY_CONTAINER }} 
     -v "{{ DOCKERDATA_DIR }}/app-nginx/nginx.app.conf":/etc/nginx/conf.d/default.conf:ro,Z 
+    -v /var/cache/nginx
+    -v /var/run
     docker.io/library/nginx:latest 
     || docker -H {{ DOCKER_HOST }} restart {{ PROXY_CONTAINER }}
   register: COMMAND_RESULT
@@ -78,6 +84,8 @@
 - name: Run MONITOR container to register the POD with etcd
   shell: >
     docker -H {{ DOCKER_HOST }} run -d --restart unless-stopped --net "container:{{ NETWORK_CONTAINER }}" 
+    --read-only
+    --cap-drop=all 
     --label version={{ NEW_VERSION }} 
     --label group={{ DEPLOYMENT_GROUP }}
     --name {{ MONITOR_CONTAINER }} 
@@ -85,7 +93,6 @@
     -e HOST_IP={{ HOST_IP }} 
     -e DEPLOYMENT_GROUP={{ DEPLOYMENT_GROUP }}
     -u {{ UID_SERVICES }} 
-    --cap-drop=all 
     node.local/containerbuddy:latest 
     || docker -H {{ DOCKER_HOST }} restart {{ MONITOR_CONTAINER }}
   register: COMMAND_RESULT

@@ -3,8 +3,11 @@
 - name: Ensure gateway proxy service
   shell: >
     docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d 
+    --read-only
     -p 80:80 
     -v {{ DOCKERDATA_DIR }}/gateway-nginx/:/etc/nginx/conf.d:z  
+    -v /var/cache/nginx
+    -v /var/run
     --name gateway-nginx 
     docker.io/library/nginx:latest 
     || docker -H {{ DOCKER_HOST }} restart gateway-nginx
@@ -21,10 +24,11 @@
 - name: Process new gateway proxy configuration from etcd
   shell: >
     docker -H {{ DOCKER_HOST }} run --restart unless-stopped -d  
+    --read-only
+    --cap-drop=all
     -v {{ DOCKERDATA_DIR }}/gateway-confd:/etc/confd:z 
     -v {{ DOCKERDATA_DIR }}/gateway-nginx:/tmp/confd-results:z 
     -u {{ UID_SERVICES }} 
-    --cap-drop=all
     --name gateway-confd 
     node.local/confd:latest 
     -node http://{{ HOST_IP }}:2379 -watch -interval 1000 
