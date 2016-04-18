@@ -59,7 +59,6 @@ sudo ./swapfile.sh
 
 ``` shell
 cd provision/docker-infra
-./disable-local-etcd.sh
 ./build-ansible.sh
 ./build-confd.sh
 ./build-containerbuddy.sh
