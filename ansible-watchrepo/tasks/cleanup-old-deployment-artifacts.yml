@@ -40,3 +40,5 @@
   shell: >
     VOLUMES=$(docker -H {{ DOCKER_HOST }} volume ls -qf dangling=true)
     && docker -H {{ DOCKER_HOST }} volume rm $VOLUMES
+  ignore_errors: true
+  changed_when: false
