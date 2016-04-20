@@ -14,9 +14,9 @@ CONFIG_VOL=$WORK_DIR/dockerdata
 REPO_VOL=$WORK_DIR/gitrepos/${GIT_WATCHED_REPO_BRANCH}
  
 docker run -it --rm \
-	-v $(which docker):/usr/bin/docker:ro \
-	-v $(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}'):/usr/lib/libdevmapper.so.1.02:ro \
-	--security-opt label:disable \
+	`#-v $(which docker):/usr/bin/docker:ro` \
+	`#-v $(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}'):/usr/lib/libdevmapper.so.1.02:ro` \
+	`# --security-opt label:disable `\
 	-v $REPO_VOL:$REPO_VOL \
 	-v $CONFIG_VOL:$CONFIG_VOL \
 	-v $ANSIBLE_VOL:/home/ansible \
