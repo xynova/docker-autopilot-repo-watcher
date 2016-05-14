@@ -12,6 +12,7 @@ DEPLOYMENT_GROUP=master-branch
 ANSIBLE_VOL=$WORK_DIR/ansible-watchrepo
 CONFIG_VOL=$WORK_DIR/dockerdata
 REPO_VOL=$WORK_DIR/gitrepos/${GIT_WATCHED_REPO_BRANCH}
+mkdir -p $REPO_VOL
 
 docker run -t --restart unless-stopped -d \
 	--read-only \
