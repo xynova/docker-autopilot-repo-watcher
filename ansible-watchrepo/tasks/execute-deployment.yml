@@ -1,5 +1,5 @@
 - name: (INCLUDE) Notify start via Slack
-  include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Starting Build for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}"
+  include: notify-via-slack.yml SLACK_MSG_TEXT="1) Starting Build for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }} \n {{ NEW_VERSION_INFO }}"
 
 - name: (INCLUDE) Prepare context
   include: prepare-context.yml
@@ -12,7 +12,7 @@
   tags: build
 
 - name: (INCLUDE) Notify start via Slack
-  include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Ensuring pod services for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}"
+  include: notify-via-slack.yml SLACK_MSG_TEXT="2) Ensuring pod services for {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }}  \n {{ NEW_VERSION_INFO }}"
 
 - name: (INCLUDE) Run new version containers
   include: run-new-containers.yml
@@ -35,4 +35,4 @@
   tags: resync
 
 - name: (INCLUDE) Notify completion via Slack
-  include: notify-via-slack.yml SLACK_MSG_TEXT="{{ ansible_date_time.iso8601 }}>\n Deployment {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }} is complete"
+  include: notify-via-slack.yml SLACK_MSG_TEXT="3) Deployment {{ NEW_VERSION }}:{{ GIT_WATCHED_REPO_BRANCH }} is complete \n {{ NEW_VERSION_INFO }}"

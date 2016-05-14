@@ -7,8 +7,16 @@
        depth=1
   register: PULL_RESULT
 
+- name: Get last commit info
+  shell: >
+    git log -1 --pretty=format:"%h - %an, %ar : %s"
+  args:
+    chdir: "{{ GIT_WATCHED_REPO_DIR }}"
+  register: COMMAND_RESULT
+
 - name: Set version results
   set_fact:
     NEW_VERSION: "{{ PULL_RESULT.after }}"
     OLD_VERSION: "{{ PULL_RESULT.before }}"
+    NEW_VERSION_INFO: "{{ COMMAND_RESULT.stdout }}"
 

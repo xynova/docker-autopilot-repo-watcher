@@ -4,7 +4,7 @@
   connection: local
   become: true
   become_method: sudo
-  gather_facts: true
+  gather_facts: false
   tasks:
     - block:
       - name: Check if the deployed service is healthy

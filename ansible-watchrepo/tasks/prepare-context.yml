@@ -15,5 +15,6 @@
     - HOST_IP
     - NEW_GIT_DIR
     - NEW_VERSION 
+    - NEW_VERSION_INFO
     - OLD_VERSION 
 
