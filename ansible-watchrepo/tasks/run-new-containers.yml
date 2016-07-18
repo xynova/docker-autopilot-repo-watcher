@@ -105,7 +105,7 @@
     CONTAINER_ID=$(docker -H {{ DOCKER_HOST }} ps -q
     --filter label=version 
     --filter name={{ NETWORK_CONTAINER }} 
-    --filter group={{ DEPLOYMENT_GROUP }})
+    --filter label=group={{ DEPLOYMENT_GROUP }})
     && docker -H {{ DOCKER_HOST }} inspect --format {% raw %}'{{ .Config.Hostname }}'{% endraw %} $CONTAINER_ID
   register: POD_HOSTNAME
   changed_when: false
